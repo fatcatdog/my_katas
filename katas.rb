@@ -469,3 +469,73 @@ function highAndLow(numbers){
 function multiply(a, b){
   return a * b
 }
+
+
+# Resistor Color Codes
+# Ruby
+
+def decode_resistor_colors(bands)
+  Decoder.new(bands.split).call
+end
+
+class Decoder
+
+  CODE_MAP = {
+    black: 0,
+    brown: 1,
+    red: 2,
+    orange: 3,
+    yellow: 4,
+    green: 5,
+    blue: 6,
+    violet: 7,
+    gray: 8,
+    white: 9
+  }
+
+  TOLERANCE = {
+    gold: '5%',
+    silver: '10%'
+  }
+
+  def initialize(bands)
+    @digit_bands = bands[0..1]
+    @power_band = bands[2]
+    @tolerance_band = bands[3] if bands[3]
+  end
+
+  def call
+    "#{processed_number(calculate_number)} ohms, #{get_tolerance}"
+  end
+
+  private
+
+  def get_number
+    @digit_bands.map(&:to_sym).map do |color|
+      CODE_MAP.values_at(color)
+    end.join.to_i
+  end
+
+  def get_power
+    CODE_MAP.select { |k, v| @power_band.include?(k.to_s) }.values.join.to_i
+  end
+
+  def get_tolerance
+    @tolerance_band ? TOLERANCE.values_at(@tolerance_band.to_sym).join : '20%'
+  end
+
+  def calculate_number
+    get_number * (10**(get_power))
+  end
+
+  def processed_number(number)
+    if number >= 1000000
+      (number % 1000000).zero? ? "#{number / 1000000}M" : "#{number.to_f / 1000000}M"
+    elsif number >= 1000
+      (number % 1000).zero? ? "#{number / 1000}k" : "#{number.to_f / 1000}k"
+    else
+      number
+    end
+  end
+
+end
