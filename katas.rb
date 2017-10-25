@@ -594,3 +594,41 @@ return "tie"
 end 
 
 end
+
+# World Bits War
+# Ruby
+
+def bits_war(numbers)
+evens = numbers.select {|x| x % 2 == 0 && x > 0 } 
+odds = numbers.select {|x| x % 2 != 0 && x > 0 } 
+neg_evens = numbers.select {|x| x % 2 == 0 && x < 0 } 
+neg_odds =  numbers.select {|x| x % 2 != 0 && x < 0 } 
+
+ones_odds = 0 
+ones_evens = 0 
+
+evens.each do |convert_and_count| 
+ones_evens += convert_and_count.to_s(2).scan(/1/).count
+end 
+
+neg_evens.each do |convert_and_count| 
+ones_evens -= convert_and_count.to_s(2).scan(/1/).count
+end 
+
+odds.each do |convert_and_count| 
+ones_odds += convert_and_count.to_s(2).scan(/1/).count
+end 
+
+neg_odds.each do |convert_and_count| 
+ones_odds -= convert_and_count.to_s(2).scan(/1/).count
+end 
+
+if ones_evens > ones_odds
+return "evens win"
+elsif ones_evens < ones_odds
+return "odds win"
+else 
+return "tie"
+end 
+
+end
