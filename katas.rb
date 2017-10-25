@@ -566,3 +566,31 @@ def encode_resistor_colors(ohms_string)
 end
 
 encode_resistor_colors("1k ohms")
+
+# Bits Battle
+# Ruby
+
+def bitsBattle(numbers)
+evens = numbers.select {|x| x % 2 == 0 && x > 0 } 
+odds = numbers.select {|x| x % 2 != 0 } 
+
+ones_odds = 0 
+zeros_evens = 0 
+
+evens.each do |convert_and_count| 
+zeros_evens += convert_and_count.to_s(2).scan(/0/).count
+end 
+
+odds.each do |convert_and_count| 
+ones_odds += convert_and_count.to_s(2).scan(/1/).count
+end 
+
+if zeros_evens > ones_odds
+return "evens win"
+elsif zeros_evens < ones_odds
+return "odds win"
+else 
+return "tie"
+end 
+
+end
